@@ -1,21 +1,26 @@
-# r-analysis-template
+# stream-temp
 
-Date
+October 7, 2022
 
 ## Overview
 
-In one or two sentences, what is this repo all about? This is the bare minimum of a README file
+This repo contains code to compile, clean up, and visualize stream temperature data from multiple sources in BC and the Yukon.
 
 ## Files
 
-What are the files and folders contained in this repo and what do they do? Can be a file-by-file explanation (good) or a general overview (less good but likley the norm; e.g., This repo contains R code to reproduce the regional summaries shown in the Pacific Salmon Explorer landing page.)
+* `data/` is where raw data files (as provided) are stored, but not uploaded to GitHub as these are often large datasets. The raw data are available from the original sources. Contact Steph Peacock for more information <speacock at psf dot ca>
+* `code/` contains code files to clean and compile data, and code for a simple shiny app to visualize data.
+* `output/` contains processed data files.
 
 ## Acknowledgements
 
-Here is a place to acknowledge contributions from project partners and funders.
+Data have been provided by:
+* Water Survey of Canada
+* Province of BC
+* ...
+
+FUnding to support this work is from the BC Salmon Restoration and Innovation Fund gran to PSF's Salmon Watersheds Program.
 
 ## More information
 
-Who can someone contact if they have questions? If you don't want to put your name, then direct folks to info at salmonwatersheds dot ca.
-
-Is there a paper or report in the Document Library that can be referenced here?
+Contact Steph Peacock <speacock at psf dot ca>.
