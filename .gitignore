@@ -1,3 +1,7 @@
+# Large data files
+data/BC/*.csv
+data/WSC/*.csv
+
 # History files
 .Rhistory
 .Rapp.history
