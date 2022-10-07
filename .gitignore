@@ -2,6 +2,7 @@
 data/BC/*.csv
 data/WSC/*.csv
 
+output/*.rds
 # History files
 .Rhistory
 .Rapp.history

@@ -34,10 +34,10 @@ SWPcol2 <- c(bluegrey = "#8DA8A1",
 # Stitch together data from multiple years/archives to yield daily means
 #------------------------------------------------------------------------------
 
-# dat1 <- read.csv("raw-data/BC Stream Temperature/WaterTemp_Archive.csv")
-# dat2 <- read.csv("raw-data/BC Stream Temperature/WaterTemp.csv")
-# dat3 <- read.csv("raw-data/BC Stream Temperature/WaterTemperature_Archive_2005Oct_2007Oct.csv")
-# dat4 <- read.csv("raw-data/BC Stream Temperature/WaterTemperature.csv")
+# dat1 <- read.csv("data/BC/WaterTemp_Archive.csv")
+# dat2 <- read.csv("data/BC/WaterTemp.csv")
+# dat3 <- read.csv("data/BC/WaterTemperature_Archive_2005Oct_2007Oct.csv")
+# dat4 <- read.csv("data/BC/WaterTemperature.csv")
 # 
 # dat <- rbind(dat1, dat2, dat3[, 2:11], dat4[, 2:11])
 # 
@@ -48,9 +48,9 @@ SWPcol2 <- c(bluegrey = "#8DA8A1",
 # # Remove NAs
 # dat <- dat[!is.na(dat$Value), ]
 # 
-# saveRDS(dat, "raw-data/BC Stream Temperature/WaterTemperature_Compiled.rds")
+# saveRDS(dat, "output/BC_WaterTemperature_Compiled.rds")
 
-dat <- readRDS("data/raw-data/stream-temperature/BC Stream Temperature/WaterTemperature_Compiled.rds")
+dat <- readRDS("output/BC_WaterTemperature_Compiled.rds")
 
 
 #------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ dailyDat_rds <- dailyDat[, c("Location.ID", "Year", "Month", "Day", "Tmax", "Tmi
 names(dailyDat_rds) <- c("StationID", "yr", "mo", "dd", "Tmax", "Tmin", "Tmean", "Nb")
 saveRDS(dailyDat_rds, file = "compiled-data/stream-temp/dailyt_BC.rds")
 
-# saveRDS(siteDat, file = "output/compiled-data/stream-temp/stations_BC.rds")
+# saveRDS(siteDat, file = "output/stations_BC.rds")
 
 siteDat <- readRDS("output/compiled-data/stream-temp/stations_BC.rds")	
 # View locations of data
