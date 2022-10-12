@@ -33,7 +33,7 @@ ui <- fluidPage(
 	br(),
 	fluidRow(
 		# Output: Leaflet map
-		leafletOutput(outputId = "map", width = "100%", height = 300)
+		leafletOutput(outputId = "map", width = "100%", height = 700)
 	),
 	
 	fluidRow(
