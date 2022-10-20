@@ -1,5 +1,5 @@
 ###############################################################################
-# Compile daily temperature mean, min, max from province and WSC into single
+# Compile daily temperature mean, min, max from Province and WSC into single
 # dataset for viewing
 ###############################################################################
 
@@ -10,11 +10,13 @@
 
 dat_BC <- readRDS("output/dailyt_BC.rds")
 dat_WSC <- readRDS("output/dailyt_WSC.rds")
+dat_YT <- readRDS("output/dailyt_YT.rds")
 
 head(dat_BC)
 head(dat_WSC)
+head(dat_YT)
 
-dat <- rbind(dat_WSC, dat_BC)
+dat <- rbind(dat_WSC, dat_BC, dat_YT)
 
 saveRDS(dat, "output/dailyt.rds")
 #------------------------------------------------------------------------------
@@ -22,15 +24,19 @@ saveRDS(dat, "output/dailyt.rds")
 #------------------------------------------------------------------------------
 
 stations_BC <- readRDS("output/stations_BC.rds")
-stations_WSC <- readRDS("coutput/stations_WSC.rds")
+stations_WSC <- readRDS("output/stations_WSC.rds")
+stations_YT <- read.csv("data/Yukon-Water-Temperature-Data-CSV/station.metadata.csv")
 
 names(stations_BC)[1:2] <- c("StationID", "StreamName")
 
+stations_YT <- stations_YT[, c("stationID", "station_seriesName", "latitude", "longitude")]
+names(stations_YT) <- c("StationID", "StreamName", "Latitude", "Longitude")
 stations <- rbind(
 	stations_BC[, c("StationID", "StreamName", "Latitude", "Longitude")],
-	stations_WSC[, c("StationID", "StreamName", "Latitude", "Longitude")]
+	stations_WSC[, c("StationID", "StreamName", "Latitude", "Longitude")],
+	stations_YT
 )
-stations$Source <- c(rep("BC", nrow(stations_BC)), rep("WSC", nrow(stations_WSC)))
+stations$Source <- c(rep("BC", nrow(stations_BC)), rep("WSC", nrow(stations_WSC)), rep("PSC", nrow(stations_YT)))
 
 saveRDS(stations, "output/stations.rds")
 

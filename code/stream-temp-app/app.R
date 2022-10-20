@@ -16,6 +16,9 @@ dat <- readRDS("data/dailyt.rds")
 stations <- readRDS("data/stations.rds")
 
 dat$date <- as.Date(paste(dat$yr, dat$mo, dat$dd, sep = "-"), format = "%Y-%m-%d")
+
+ptCol <- c('#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e')[c(1:length(unique(stations$Source)))]
+
 ###############################################################################
 # Define user interface
 ###############################################################################
@@ -28,12 +31,12 @@ ui <- fluidPage(
 	
 	HTML("<h2 style='background: #D9D9D9; padding: 20px'>Stream Temperature Data</h2>"),
 	
-	HTML("<p> These data are provided as-is by the Province of British Columbia (BC; red on map) and the Water Survey of Canada (WSC; orange on map). No quality assurance or quality control has been done and the accurancy of the data is not guaranteed. </p> <p> To view the timeseries for a specific station, click on the coloured circle on that map. The timeseries shows the daily mean temeprature (black line), and the daily range (minimum and maximum temperatures; grey polygon). </p>"),
+	HTML("<p> These data are provided as-is by the Province of British Columbia (BC), the Water Survey of Canada (WSC), and downloaded from the <a href='https://www.yukonriverpanel.com/publications/data-sets/'>Pacific Salmon Commission (PSC)</a>. No quality assurance or quality control has been done and the accurancy of the data is not guaranteed. </p> <p> To view the timeseries for a specific station, click on the coloured circle on that map. The timeseries shows the daily mean temeprature (black line), and the daily range (minimum and maximum temperatures; grey polygon). </p>"),
 	br(),
 	br(),
 	fluidRow(
 		# Output: Leaflet map
-		leafletOutput(outputId = "map", width = "100%", height = 700)
+		leafletOutput(outputId = "map", width = "100%", height = 600)
 	),
 	
 	fluidRow(
@@ -46,6 +49,8 @@ ui <- fluidPage(
 ###############################################################################
 
 server <- function(input, output, session) {
+
+  
 	output$map <- renderLeaflet({
 		leaflet() %>%
 			addProviderTiles(providers$Esri.WorldTopoMap, options = providerTileOptions(noWrap = TRUE)) %>% 
@@ -54,13 +59,13 @@ server <- function(input, output, session) {
 				lng = stations$Longitude, 
 				layerId = stations$StationID, 
 				popup = stations$StreamName,
-				fillColor = c("#A92649", "#E59B41")[as.numeric(as.factor(stations$Source))],
+				fillColor = ptCol[as.numeric(as.factor(stations$Source))],
 				fillOpacity = 0.5, 
 				opacity = 1,
 				radius = 5,
 				weight = 1,
-				color = c("#A92649", "#E59B41")[as.numeric(as.factor(stations$Source))])
-	 })
+				color = ptCol[as.numeric(as.factor(stations$Source))]) %>% addLegend(position = "topright", colors = ptCol, labels = c("Prov BC", "Water Survey of Canada", "Pacific Salmon Commission"), opacity = 0.5)
+	 }) 
 
 	observeEvent(input$map_marker_click, { 
 		p <- input$map_marker_click

@@ -10,7 +10,7 @@
 # Read in data
 ###############################################################################
 
-path <- "raw-data/WSC-water-temperature/historical/"
+path <- "data/WSC/"
 
 # Daily temperature 
 dailyt <- read.csv(paste0(path, "Envcanada_dailyt_data_envcanada.csv"))
@@ -22,10 +22,10 @@ stations <- read.csv(paste0(path, "Envcanada_ec_tw_stations_location.csv"))
 head(stations)
 
 # Extract stations in BC
-stationsBC <- stations[stations$Province == "BC", ] # 153 stations
+stationsPac <- stations[stations$Province %in% c("BC", "YT"), ] # 153 stations in BC 36 in YT = 189 stations total
 
-dailyt$StationName %in% stationsBC$StreamName
-dailytBC <- dailyt[dailyt$StationName %in% stationsBC$StreamName]
+dailyt$StationName %in% stationsPac$StreamName
+dailytPac <- dailyt[dailyt$StationName %in% stationsPac$StreamName, ]
 
 # Explore other files
 allFiles <- c(
@@ -63,16 +63,13 @@ sort(unique(dailyt$StationName))[1:20]
 
 # StationsName = StreamName
 
-dailytBC <- dailyt[dailyt$StationName %in% stations$StreamName[stations$Province == "BC"], ]
-dim(dailytBC)
+dailytPac$StationID <- stations$StationID[match(dailytPac$StationName, stations$StreamName)]
 
-dailytBC$StationID <- stations$StationID[match(dailytBC$StationName, stations$StreamName)]
+dailytPac <- dailytPac[, c("StationID", "an_yr", "mo", "jj_dd", "Tmax", "Tmin", "Tmean", "Nb")]
+names(dailytPac) <- c("StationID", "yr", "mo", "dd", "Tmax", "Tmin", "Tmean", "Nb")
 
-dailytBC <- dailytBC[, c("StationID", "an_yr", "mo", "jj_dd", "Tmax", "Tmin", "Tmean", "Nb")]
-names(dailytBC) <- c("StationID", "yr", "mo", "dd", "Tmax", "Tmin", "Tmean", "Nb")
+stationsPac <- stationsPac[, c("StationID", "StreamName", "Riv", "Latitude", "Longitude", "etat")]
 
-stationsBC <- stationsBC[, c("StationID", "StreamName", "Riv", "Latitude", "Longitude", "etat")]
-
-saveRDS(dailytBC, file = "compiled-data/stream-temp/dailyt_WSC.rds")
-saveRDS(stationsBC, file = "compiled-data/stream-temp/stations_WSC.rds")
+saveRDS(dailytPac, file = "output/dailyt_WSC.rds")
+saveRDS(stationsPac, file = "output/stations_WSC.rds")
 
