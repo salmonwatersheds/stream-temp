@@ -42,7 +42,7 @@ allFiles <- c(
 	"Envcanada_ec_tw_stations_location.csv" #11
 )
 
-z <- read.csv(paste0(path, allFiles[8]))
+z <- read.csv(paste0(path, allFiles[4]))
 head(z)
 
 stationID_BC <- z$StationID[z$Province == "BC"]

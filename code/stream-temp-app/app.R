@@ -17,7 +17,9 @@ stations <- readRDS("data/stations.rds")
 
 dat$date <- as.Date(paste(dat$yr, dat$mo, dat$dd, sep = "-"), format = "%Y-%m-%d")
 
-ptCol <- c('#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e')[c(1:length(unique(stations$Source)))]
+src <- sort(unique(stations$Source))
+ptCol <- c('#1b9e77','#d95f02','#7570b3','#e7298a','#66a61e')[c(1:length(src))]
+
 
 ###############################################################################
 # Define user interface
@@ -59,12 +61,12 @@ server <- function(input, output, session) {
 				lng = stations$Longitude, 
 				layerId = stations$StationID, 
 				popup = stations$StreamName,
-				fillColor = ptCol[as.numeric(as.factor(stations$Source))],
+				fillColor = ptCol[as.numeric(factor(stations$Source, levels = src))],
 				fillOpacity = 0.5, 
 				opacity = 1,
 				radius = 5,
 				weight = 1,
-				color = ptCol[as.numeric(as.factor(stations$Source))]) %>% addLegend(position = "topright", colors = ptCol, labels = c("Prov BC", "Water Survey of Canada", "Pacific Salmon Commission"), opacity = 0.5)
+				color = ptCol[as.numeric(factor(stations$Source, levels = src))]) %>% addLegend(position = "topright", colors = ptCol, labels = src, opacity = 0.5)
 	 }) 
 
 	observeEvent(input$map_marker_click, { 
