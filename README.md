@@ -17,11 +17,11 @@ This repo contains code to compile, clean up, and visualize stream temperature d
 Data have been provided by:
 * Water Survey of Canada
 * Province of BC
-*[Pacific Salmon Commission](https://www.yukonriverpanel.com/publications/data-sets/)
+* [Pacific Salmon Commission](https://www.yukonriverpanel.com/publications/data-sets/)
 * ...
 
 Funding to support this work is from the BC Salmon Restoration and Innovation Fund grant to PSF's Salmon Watersheds Program.
 
 ## More information
 
-Contact Steph Peacock <speacock at psf dot ca>.
+Contact Steph Peacock  (speacock at psf dot ca).
