@@ -4,7 +4,7 @@ October 7, 2022
 
 ## Overview
 
-This repo contains code to compile, clean up, and visualize stream temperature data from multiple sources in BC and the Yukon. *There is not yet any QA/QC of these data.* Summaries of daily min, mean, and max stream temperature can be visualized in associated (R Shiny app)[https://salmonwatersheds.shinyapps.io/stream-temp/].
+This repo contains code to compile, clean up, and visualize stream temperature data from multiple sources in BC and the Yukon. *There is not yet any QA/QC of these data.* Summaries of daily min, mean, and max stream temperature can be visualized in associated [R Shiny app](https://salmonwatersheds.shinyapps.io/stream-temp/).
 
 ## Files
 
@@ -17,7 +17,7 @@ This repo contains code to compile, clean up, and visualize stream temperature d
 Data have been provided by:
 * Water Survey of Canada
 * Province of BC
-* (Pacific Salmon Commission)[https://www.yukonriverpanel.com/publications/data-sets/]
+*[Pacific Salmon Commission](https://www.yukonriverpanel.com/publications/data-sets/)
 * ...
 
 Funding to support this work is from the BC Salmon Restoration and Innovation Fund grant to PSF's Salmon Watersheds Program.
