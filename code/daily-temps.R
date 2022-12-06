@@ -18,7 +18,29 @@ head(dat_YT)
 
 dat <- rbind(dat_WSC, dat_BC, dat_YT)
 
-saveRDS(dat, "output/dailyt.rds")
+# Flesh out time series for each site, adding NAs for missing periods
+length(unique(dat$StationID))
+dat.full <- dat[1, ]
+dat.full$date <- as.Date(paste(dat.full$yr, dat.full$mo, dat.full$dd, sep = "-"))
+ind <- 1
+
+for(i in 1:length(unique(dat$StationID))){ # For each station
+  dat.i <- dat[dat$StationID == unique(dat$StationID)[i], ]
+  dat.i$date <- as.Date(paste(dat.i$yr, dat.i$mo, dat.i$dd, sep = "-"))
+  r <- range(dat.i$date)
+  dd <- as.Date(r[1]:r[2], origin = "1970-01-01")
+  dat.full[ind:(ind + length(dd) - 1), 'date'] <- dd
+  dat.full[ind:(ind + length(dd) - 1), 'StationID'] <- unique(dat$StationID)[i]
+  dat.full[c(ind:(ind + length(dd) - 1))[match(dat.i$date, dd)], c("Tmax", "Tmin", "Tmean", "Nb")] <- dat.i[, c("Tmax", "Tmin", "Tmean", "Nb")]
+  
+  ind <- ind + length(dd)
+}
+
+dat.full$yr <- as.numeric(strftime(dat.full$date, format = "%Y"))
+dat.full$mo <- as.numeric(strftime(dat.full$date, format = "%m"))
+dat.full$dd <- as.numeric(strftime(dat.full$date, format = "%d"))
+
+saveRDS(dat.full, "output/dailyt.rds")
 #------------------------------------------------------------------------------
 # Station information
 #------------------------------------------------------------------------------

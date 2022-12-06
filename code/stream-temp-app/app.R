@@ -33,7 +33,7 @@ ui <- fluidPage(
 	
 	HTML("<h2 style='background: #D9D9D9; padding: 20px'>Stream Temperature Data</h2>"),
 	
-	HTML("<p> These data are provided as-is by the Province of British Columbia (BC), the Water Survey of Canada (WSC), and downloaded from the <a href='https://www.yukonriverpanel.com/publications/data-sets/'>Pacific Salmon Commission (PSC)</a>. No quality assurance or quality control has been done and the accurancy of the data is not guaranteed. </p> <p> To view the timeseries for a specific station, click on the coloured circle on that map. The timeseries shows the daily mean temeprature (black line), and the daily range (minimum and maximum temperatures; grey polygon). </p>"),
+	HTML("<p> These data are provided as-is by the Province of British Columbia (BC), the Water Survey of Canada (WSC), and downloaded from the <a href='https://www.yukonriverpanel.com/publications/data-sets/'>Pacific Salmon Commission (PSC)</a>. No quality assurance or quality control has been done and the accurancy of the data is not guaranteed. </p> <p> To view the timeseries for a specific station, click on the coloured circle on that map. The timeseries shows the daily mean temeprature (black line), and the daily minimum and maximum temperatures (grey lines). </p>"),
 	br(),
 	br(),
 	fluidRow(
@@ -78,13 +78,16 @@ server <- function(input, output, session) {
 			mo <- strftime(rangeD, format = "%m")
 			yr <- strftime(rangeD, format = "%Y")
 			
-			plot(dat.p$date, dat.p$Tmean, "n", xlab = "", ylab = expression(paste("Daily temperature (", degree, "C)")), las = 1, ylim = range(dat.p$Tmin, dat.p$Tmax), xaxt = "n")
-			
+			plot(dat.p$date, dat.p$Tmean, "n", xlab = "", ylab = expression(paste("Daily temperature (", degree, "C)")), las = 1, ylim = range(dat.p$Tmin, dat.p$Tmax, na.rm = TRUE), xaxt = "n")
+			u <- par('usr')
 			# Add pretty date axes
-		
-	
+			# Add tick for year
+			# axis(side = 1, at = as.Date(paste(unique(dat.p$yr), "01", "01", sep = "-")), labels = FALSE, tck = -0.1, col = grey(0.8), lwd = 2)
+			segments(x0 = as.Date(paste(unique(dat.p$yr), "01", "01", sep = "-")), x1 = as.Date(paste(unique(dat.p$yr), "01", "01", sep = "-")), y0 = u[3] - 0.12*(u[4] - u[3]), y1 = u[3] - 0.2*(u[4] - u[3]), xpd = NA)
+			text(as.Date(paste(unique(dat.p$yr), "01", "01", sep = "-"))+365/2, u[3] - 0.15*(u[4] - u[3]), unique(dat.p$yr), xpd = NA)
+			
 		for(i in 1:length(unique(dat.p$yr))){
-			axis(side = 1, at = as.Date(paste(unique(dat.p$yr), "01", "01", sep = "-")), labels = unique(dat.p$yr), tck = -0.1)
+			
 			
 			if(i == 1){
 				axis(side = 1, at = as.Date(paste(yr[1], c(mo[1]:12), "01", sep = "-")), labels = FALSE, tck = -0.02)
@@ -100,7 +103,10 @@ server <- function(input, output, session) {
 			# polygon(x = c(as.Date(paste(unique(dat.p$yr)[i], c(6,8), c("01", "31"), sep = "-")), rev(as.Date(paste(unique(dat.p$yr)[i], c(6,8), c("01", "31"), sep = "-")))), y = c(-1, -1, 60, 60), col = "#A9264930", border = NA)
 		}
 		
-			polygon(x = c(dat.p$date, rev(dat.p$date)), y = c(dat.p$Tmin, rev(dat.p$Tmax)), border = NA, col = "#00000030")
+			# polygon(x = c(dat.p$date, rev(dat.p$date)), y = c(dat.p$Tmin, rev(dat.p$Tmax)), border = NA, col = "#00000030")
+			lines(dat.p$date, dat.p$Tmin, col = grey(0.8), lwd = 1.5)
+			lines(dat.p$date, dat.p$Tmax, col = grey(0.8), lwd = 1.5)
+			
 			lines(dat.p$date, dat.p$Tmean)
 			if(length(unique(dat.p$yr)) == 2){
 				mtext(side = 1, line = 3, paste(unique(dat.p$yr)[1], unique(dat.p$yr)[2], sep = "/"))
